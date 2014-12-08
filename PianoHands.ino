@@ -107,9 +107,12 @@ int low5;
 
 int hi1,hi2,hi3,hi4,hi5;
 
+#define window 150
+#define bound 20
+
 // notes in the melody:
 int melody[] = {
-  NOTE_C4, NOTE_G3,NOTE_G3, NOTE_A3, NOTE_G3,0, NOTE_B3, NOTE_C4};
+  NOTE_A3, NOTE_B3,NOTE_C3, NOTE_D3, NOTE_E3 ,0, NOTE_B3, NOTE_C4};
 
 // note durations: 4 = quarter note, 8 = eighth note, etc.:
 int noteDurations[] = {
@@ -122,11 +125,11 @@ void setup() {
     hi3 = analogRead(thirdSensorPin);
     hi4 = analogRead(fourthSensorPin);
     hi5 = analogRead(fifthSensorPin);
-    low1 = hi1 - 120;
-    low2 = hi2 - 120;
-    low3 = hi3 - 120;
-    low4 = hi4 - 120;
-    low5 = hi5 - 120;
+    low1 = hi1 - window;
+    low2 = hi2 - window;
+    low3 = hi3 - window;
+    low4 = hi4 - window;
+    low5 = hi5 - window;
     
                     
 }
@@ -147,31 +150,29 @@ void loop() {
   int third = map(thirdSensorReading, hi3, low3, 0, 100);
   int fourth = map(fourthSensorReading, hi4, low4, 0, 100);
   int fifth = map(fifthSensorReading, hi5, low5, 0, 100);
-
   int average = 0;  //average of the all flexed fingers is calculated, and that is played.
   int count = 0;
   
   /* ALL YOU HAVE TO DO IN THIS CODE IS ADD THE THIRD FORTH AND POSSIBLY FIFTH FLEX SENSORS */ 
-  if (first > 50){
+  if (first > bound){
     count++;
     average = (melody[0] + average)/count;
   }
-  if (second > 50){
+  if (second > bound){
     count++;
     average = (melody[1] + average)/count;
 
   }
-  if (third > 50){
+  if (third > bound ){
     count++;
     average = (melody[2] + average)/count;
-
   }
-  if (fourth > 50){
+  if (fourth > bound){
     count++;
     average = (melody[3] + average)/count;
 
   }
-  if (fifth > 50){
+  if (fifth > bound){
     count++;
     average = (melody[4] + average)/count;
 
