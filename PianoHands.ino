@@ -95,8 +95,17 @@
 
 int firstSensorPin = A0; //analog pin 0
 int secondSensorPin = A1; //analog pin 0
+int thirdSensorPin = A2;
+int fourthSensorPin = A3;
+int fifthSensorPin = A4;
 
+int low1;
+int low2;
+int low3;
+int low4;
+int low5;
 
+int hi1,hi2,hi3,hi4,hi5;
 
 // notes in the melody:
 int melody[] = {
@@ -108,32 +117,66 @@ int noteDurations[] = {
 
 void setup() {
     Serial.begin(9600);
+    hi1 = analogRead(firstSensorPin);
+    hi2 = analogRead(secondSensorPin);
+    hi3 = analogRead(thirdSensorPin);
+    hi4 = analogRead(fourthSensorPin);
+    hi5 = analogRead(fifthSensorPin);
+    low1 = hi1 - 120;
+    low2 = hi2 - 120;
+    low3 = hi3 - 120;
+    low4 = hi4 - 120;
+    low5 = hi5 - 120;
+    
+                    
 }
 
 void loop() {
   
   int firstSensorReading = analogRead(firstSensorPin); 
   int secondSensorReading = analogRead(secondSensorPin); 
+  int thirdSensorReading = analogRead(thirdSensorPin);
+  int fourthSensorReading = analogRead(fourthSensorPin);
+  int fifthSensorReading = analogRead(fifthSensorPin);
 
 
   //In my tests I was getting a reading on the arduino between 512, and 614. 
   //Using map(), you can convert that to a larger range like 0-100.
-  int first = map(firstSensorReading, 450, 330, 0, 100);
-  int second = map(secondSensorReading, 450, 330, 0, 100);
-  int average = -1;  //average of the all flexed fingers is calculated, and that is played.
+  int first = map(firstSensorReading, hi1, low1, 0, 100);
+  int second = map(secondSensorReading, hi2, low2, 0, 100);
+  int third = map(thirdSensorReading, hi3, low3, 0, 100);
+  int fourth = map(fourthSensorReading, hi4, low4, 0, 100);
+  int fifth = map(fifthSensorReading, hi5, low5, 0, 100);
+
+  int average = 0;  //average of the all flexed fingers is calculated, and that is played.
   int count = 0;
   
   /* ALL YOU HAVE TO DO IN THIS CODE IS ADD THE THIRD FORTH AND POSSIBLY FIFTH FLEX SENSORS */ 
-  if (first > 70){
+  if (first > 50){
     count++;
     average = (melody[0] + average)/count;
   }
-  if (second > 70){
+  if (second > 50){
     count++;
     average = (melody[1] + average)/count;
 
   }
-  if (average != -1){
+  if (third > 50){
+    count++;
+    average = (melody[2] + average)/count;
+
+  }
+  if (fourth > 50){
+    count++;
+    average = (melody[3] + average)/count;
+
+  }
+  if (fifth > 50){
+    count++;
+    average = (melody[4] + average)/count;
+
+  }  
+  if (average != 0){
     tone(8, average);
   }
   else
